@@ -8,7 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 
 @Dao
-interface NoteDao {
+interface TaskDao {
     @Insert
     suspend fun insert(note: Task)
 

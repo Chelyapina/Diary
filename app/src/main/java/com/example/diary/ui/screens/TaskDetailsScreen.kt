@@ -16,20 +16,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.diary.ui.TaskViewModel
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import com.example.diary.ui.components.LabeledText
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TaskDetailsScreen(navController: NavHostController, taskId: Long, viewModel: TaskViewModel) {
     val task by viewModel.get(taskId).observeAsState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -41,25 +37,21 @@ fun TaskDetailsScreen(navController: NavHostController, taskId: Long, viewModel:
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             task?.let {
-                task?.let {
-                    LabeledText(label = "Название", text = it.name)
-                    LabeledText(label = "Описание", text = it.description)
-                    it.dateStart?.let { it1 ->
-                        formatDateTime(
-                            it1
-                        )
-                    }?.let { it2 -> LabeledText(label = "Дата и время начала", text = it2) }
-                    it.dateFinish?.let { it1 -> formatDateTime(it1) }?.let { it2 ->
-                        LabeledText(
-                            label = "Дата и время окончания",
-                            text = it2
-                        )
-                    }
-                }
+                LabeledText(label = "Название", text = it.name)
+                LabeledText(label = "Описание", text = it.description)
+
+                LabeledText(
+                    label = "Дата и время начала",
+                    text = viewModel.formatDateTime(it.dateStart ?: 0L)
+                )
+                LabeledText(
+                    label = "Дата и время окончания",
+                    text = viewModel.formatDateTime(it.dateFinish ?: 0L)
+                )
+
                 Button(onClick = {
                     viewModel.delete(it)
                     navController.navigate("calendar")
-
                 }) {
                     Text("Удалить")
                 }
@@ -72,24 +64,4 @@ fun TaskDetailsScreen(navController: NavHostController, taskId: Long, viewModel:
             }
         }
     }
-}
-
-@Composable
-fun LabeledText(label: String, text: String) {
-    Text(
-        text = label,
-        fontWeight = FontWeight.Bold,
-        fontSize = 16.sp,
-        modifier = Modifier.padding(bottom = 4.dp)
-    )
-    Text(text = text, modifier = Modifier.padding(bottom = 8.dp))
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-fun formatDateTime(dateMillis: Long): String {
-    if (dateMillis == 0L) return "not set"
-    val instant = Instant.ofEpochMilli(dateMillis)
-    val dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
-    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
-    return dateTime.format(formatter)
 }

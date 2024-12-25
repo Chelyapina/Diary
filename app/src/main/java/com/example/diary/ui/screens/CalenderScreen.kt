@@ -26,8 +26,6 @@ import androidx.navigation.NavHostController
 import com.example.diary.ui.TaskViewModel
 import com.example.diary.ui.components.MyDatePicker
 import com.example.diary.ui.components.TwoLineListItem
-import java.sql.Timestamp
-import java.time.ZoneId
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -35,24 +33,21 @@ fun CalendarScreen(navController: NavHostController, viewModel: TaskViewModel) {
     val allTasks by viewModel.allTasks.observeAsState(initial = emptyList())
     var selectedDateMillis by remember { mutableStateOf(System.currentTimeMillis()) }
 
-    Column(modifier = Modifier.padding(32.dp),
+    Column(
+        modifier = Modifier.padding(32.dp),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally) {
-
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         FloatingActionButton(onClick = { navController.navigate("add_task") }) {
             Text("Добавить задачу")
         }
 
         MyDatePicker(onDateSelected = { date -> selectedDateMillis = date })
 
-        val filteredTasks = allTasks.filter { task ->
-            val taskDate = task.dateStart
-            val dateStartAtMidnight = selectedDateMillis - selectedDateMillis % (24 * 60 * 60 * 1000)
-            taskDate!! >= dateStartAtMidnight && taskDate < dateStartAtMidnight + (24 * 60 * 60 * 1000)
-        }
+        val filteredAndSortedTasks = viewModel.filterAndSortTasksByDate(allTasks, selectedDateMillis)
 
         LazyColumn {
-            items(filteredTasks) { task ->
+            items(filteredAndSortedTasks) { task ->
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -62,16 +57,8 @@ fun CalendarScreen(navController: NavHostController, viewModel: TaskViewModel) {
                         },
                     shape = MaterialTheme.shapes.medium
                 ) {
-                    val tsDateStart= task.dateStart?.let { Timestamp(it) }
-                    val localDateTimeDateStart = tsDateStart?.toInstant()?.atZone(ZoneId.systemDefault())
-                        ?.toLocalDateTime()
-                    val hoursDateStart = localDateTimeDateStart?.hour
-                    val tsDateEnd= task.dateFinish?.let { Timestamp(it) }
-                    val localDateTimeDateEnd = tsDateEnd?.toInstant()?.atZone(ZoneId.systemDefault())
-                        ?.toLocalDateTime()
-                    val hoursDateEnd = localDateTimeDateEnd?.hour
-                        TwoLineListItem(time = "$hoursDateStart - $hoursDateEnd",
-                            taskName = task.name)
+                    val time = viewModel.formatTaskTime(task)
+                    TwoLineListItem(time = time, taskName = task.name)
                 }
             }
         }

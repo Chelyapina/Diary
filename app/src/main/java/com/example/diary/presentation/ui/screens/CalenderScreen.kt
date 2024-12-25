@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableLongStateOf
@@ -33,6 +34,7 @@ import com.example.diary.presentation.ui.components.TwoLineListItem
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarScreen(navController: NavHostController, viewModel: TaskViewModel) {
+
     val allTasks by viewModel.allTasks.observeAsState(initial = emptyList())
     var selectedDateMillis by remember { mutableLongStateOf(System.currentTimeMillis()) }
 
@@ -48,20 +50,23 @@ fun CalendarScreen(navController: NavHostController, viewModel: TaskViewModel) {
         MyDatePicker(onDateSelected = { date -> selectedDateMillis = date })
 
         val filteredAndSortedTasks = viewModel.filterAndSortTasksByDate(allTasks, selectedDateMillis)
-
-        LazyColumn {
-            items(filteredAndSortedTasks) { task ->
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp)
-                        .clickable {
-                            navController.navigate("task_detail/${task.id}")
-                        },
-                    shape = MaterialTheme.shapes.medium
-                ) {
-                    val time = viewModel.formatTaskTime(task)
-                    TwoLineListItem(time = time, taskName = task.name)
+        if (allTasks.isEmpty()) {
+            Text(stringResource(R.string.no_tasks))
+        } else {
+            LazyColumn {
+                items(filteredAndSortedTasks) { task ->
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                            .clickable {
+                                navController.navigate("task_detail/${task.id}")
+                            },
+                        shape = MaterialTheme.shapes.medium
+                    ) {
+                        val time = viewModel.formatTaskTime(task)
+                        TwoLineListItem(time = time, taskName = task.name)
+                    }
                 }
             }
         }

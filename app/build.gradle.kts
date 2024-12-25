@@ -72,6 +72,10 @@ dependencies {
 
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     kapt ("androidx.room:room-compiler:2.6.1")
+    implementation("com.google.code.gson:gson:2.11.0")
+
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

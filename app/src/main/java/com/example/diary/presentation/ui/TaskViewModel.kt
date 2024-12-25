@@ -1,11 +1,15 @@
 package com.example.diary.presentation.ui
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.example.diary.data.storage.TaskDb
+import com.example.diary.domain.Task
+import com.example.diary.domain.TaskMapper
 import com.example.diary.domain.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,21 +23,28 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskViewModel @Inject constructor(
-    private val taskRepository: TaskRepository
+    private val taskRepository: TaskRepository,
+    private val taskMapper: TaskMapper
 ) : ViewModel() {
-    val allTasks: LiveData<List<TaskDb>> = taskRepository.getAllTasks()
+    val allTasks: LiveData<List<Task>> = taskRepository.getAllTasks().map { taskDbList ->
+        taskDbList.map { taskMapper.mapToDomain(it) }
+    }
 
-    private fun insert(task: TaskDb) {
+    fun getTaskById(id: Long): LiveData<Task?> {
+        return taskRepository.getTaskById(id).map { taskDb ->
+            taskDb.let { taskMapper.mapToDomain(it) }
+        }
+
+    }
+
+    private fun insert(task: Task) {
         viewModelScope.launch {
             taskRepository.insertTask(task)
+            Log.d("TaskViewModel", "Сохраняем задачу в формате JSON: ${taskMapper.taskToJson(task)}")
         }
     }
 
-    fun get(taskId: Long): LiveData<TaskDb> {
-        return taskRepository.getTaskById(taskId)
-    }
-
-    fun delete(task: TaskDb) {
+    fun delete(task: Task) {
         viewModelScope.launch {
             taskRepository.deleteTask(task)
         }
@@ -56,16 +67,17 @@ class TaskViewModel @Inject constructor(
         dateCalendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE))
         val dateEndMillis = dateCalendar.timeInMillis + (60 * 60 * 1000)
 
-        this.insert(TaskDb(
+        val task = Task(
             name = taskName,
             description = taskDescription,
             dateStart = dateCalendar.timeInMillis,
             dateFinish = dateEndMillis
-        ))
+        )
+        this.insert(task)
         return true
     }
 
-    fun filterAndSortTasksByDate(allTasks: List<TaskDb>, selectedDateMillis: Long): List<TaskDb> {
+    fun filterAndSortTasksByDate(allTasks: List<Task>, selectedDateMillis: Long): List<Task> {
         val dateStartAtMidnight = selectedDateMillis - selectedDateMillis % (24 * 60 * 60 * 1000)
         return allTasks.filter { task ->
             val taskDate = task.dateStart ?: 0L
@@ -74,7 +86,7 @@ class TaskViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun formatTaskTime(task: TaskDb): String {
+    fun formatTaskTime(task: Task): String {
         val dateStart = task.dateStart ?: 0L
         val dateEnd = task.dateFinish ?: 0L
 

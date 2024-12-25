@@ -1,6 +1,7 @@
 package com.example.diary.presentation.ui.screens
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -26,8 +28,7 @@ import com.example.diary.presentation.ui.components.LabeledText
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TaskDetailsScreen(navController: NavHostController, taskId: Long, viewModel: TaskViewModel) {
-    val task by viewModel.get(taskId).observeAsState()
-
+    val task by viewModel.getTaskById(taskId).observeAsState()
     Box(
         modifier = Modifier
             .fillMaxSize()

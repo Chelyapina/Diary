@@ -6,11 +6,22 @@ import com.example.diary.data.storage.TaskDb
 import javax.inject.Inject
 
 class TaskRepository @Inject constructor(
-    private val taskDao: TaskDao
+    private val taskDao: TaskDao,
+    private val taskMapper: TaskMapper
 ) {
-    suspend fun insertTask(task: TaskDb) = taskDao.insert(task)
-    suspend fun updateTask(task: TaskDb) = taskDao.update(task)
-    suspend fun deleteTask(task: TaskDb) = taskDao.delete(task)
-    fun getAllTasks(): LiveData<List<TaskDb>> = taskDao.getAll()
-    fun getTaskById(id: Long): LiveData<TaskDb> = taskDao.get(id)
+    fun getAllTasks(): LiveData<List<TaskDb>> {
+        return taskDao.getAll()
+    }
+
+    fun getTaskById(id: Long): LiveData<TaskDb> {
+        return taskDao.get(id)
+    }
+
+    suspend fun insertTask(task: Task) {
+        taskDao.insert(taskMapper.mapToData(task))
+    }
+
+    suspend fun deleteTask(task: Task) {
+        taskDao.delete(taskMapper.mapToData(task))
+    }
 }

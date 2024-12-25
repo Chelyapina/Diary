@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id ("kotlin-kapt")
     id("com.google.dagger.hilt.android")
-//    id ("dagger.hilt.android.plugin")
 }
 
 android {
@@ -71,18 +70,12 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
-//    implementation (libs.hilt.android)
-//    implementation (libs.androidx.hilt.navigation.compose)
-//    kapt (libs.hilt.android.compiler)
-
-//    implementation("com.google.dagger:hilt-android:2.51.1")
-//    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
-
-    // Hilt navigation for Jetpack Compose
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")// Убедитесь, что используете актуальную версию
-
-//
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     kapt ("androidx.room:room-compiler:2.6.1")
+    implementation("com.google.code.gson:gson:2.11.0")
+
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

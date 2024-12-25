@@ -1,10 +1,10 @@
-package com.example.diary
+package com.example.diary.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.diary.ui.theme.DiaryTheme
+import com.example.diary.presentation.ui.theme.DiaryTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

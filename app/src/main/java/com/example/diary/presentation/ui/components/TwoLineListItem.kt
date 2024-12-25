@@ -1,4 +1,4 @@
-package com.example.diary.ui.components
+package com.example.diary.presentation.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ListItem

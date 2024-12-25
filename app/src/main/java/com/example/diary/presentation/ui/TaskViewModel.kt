@@ -1,4 +1,4 @@
-package com.example.diary.ui
+package com.example.diary.presentation.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi

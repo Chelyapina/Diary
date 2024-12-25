@@ -1,4 +1,4 @@
-package com.example.diary.ui.components
+package com.example.diary.presentation.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.example.diary.ui.screens
+package com.example.diary.presentation.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,9 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.diary.ui.TaskViewModel
-import com.example.diary.ui.components.MyDateInput
-import com.example.diary.ui.components.MyTimeInput
+import com.example.diary.presentation.ui.TaskViewModel
+import com.example.diary.presentation.ui.components.MyDateInput
+import com.example.diary.presentation.ui.components.MyTimeInput
 
 @Composable
 fun AddTaskScreen(navController: NavHostController, viewModel: TaskViewModel) {

@@ -1,14 +1,14 @@
-package com.example.diary
+package com.example.diary.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.diary.ui.TaskViewModel
-import com.example.diary.ui.screens.AddTaskScreen
-import com.example.diary.ui.screens.CalendarScreen
-import com.example.diary.ui.screens.TaskDetailsScreen
+import com.example.diary.presentation.ui.TaskViewModel
+import com.example.diary.presentation.ui.screens.AddTaskScreen
+import com.example.diary.presentation.ui.screens.CalendarScreen
+import com.example.diary.presentation.ui.screens.TaskDetailsScreen
 
 @Composable
 fun DiaryApp() {

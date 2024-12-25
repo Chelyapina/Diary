@@ -1,4 +1,4 @@
-package com.example.diary.ui.screens
+package com.example.diary.presentation.ui.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -23,9 +23,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.diary.ui.TaskViewModel
-import com.example.diary.ui.components.MyDatePicker
-import com.example.diary.ui.components.TwoLineListItem
+import com.example.diary.presentation.ui.TaskViewModel
+import com.example.diary.presentation.ui.components.MyDatePicker
+import com.example.diary.presentation.ui.components.TwoLineListItem
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

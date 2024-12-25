@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id ("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+//    id ("dagger.hilt.android.plugin")
 }
 
 android {
@@ -48,6 +50,8 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+
 }
 
 dependencies {
@@ -62,7 +66,24 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation (libs.androidx.room.runtime)
     implementation (libs.androidx.room.ktx)
+    implementation(libs.androidx.runtime.livedata)
+
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+
+//    implementation (libs.hilt.android)
+//    implementation (libs.androidx.hilt.navigation.compose)
+//    kapt (libs.hilt.android.compiler)
+
+//    implementation("com.google.dagger:hilt-android:2.51.1")
+//    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+
+    // Hilt navigation for Jetpack Compose
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")// Убедитесь, что используете актуальную версию
+
+//
     kapt ("androidx.room:room-compiler:2.6.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,4 +91,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+kapt {
+    correctErrorTypes = true
 }

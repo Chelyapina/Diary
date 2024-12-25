@@ -1,9 +1,11 @@
 package com.example.diary
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.diary.ui.TaskViewModel
 import com.example.diary.ui.screens.AddTaskScreen
 import com.example.diary.ui.screens.CalendarScreen
 import com.example.diary.ui.screens.TaskDetailsScreen
@@ -11,12 +13,16 @@ import com.example.diary.ui.screens.TaskDetailsScreen
 @Composable
 fun DiaryApp() {
     val navController = rememberNavController()
+    val viewModel: TaskViewModel = hiltViewModel()
 
     NavHost(navController = navController, startDestination = "calendar") {
-        composable("calendar") { CalendarScreen(navController) }
-        composable("add_task") { AddTaskScreen(navController) }
-        composable("task_detail") { backStackEntry ->
-            TaskDetailsScreen(navController, backStackEntry.arguments?.getString("taskId"))
+        composable("calendar") { CalendarScreen(navController, viewModel) }
+        composable("add_task") { AddTaskScreen(navController, viewModel) }
+        composable("task_detail/{taskId}") { backStackEntry ->
+            val taskId = backStackEntry.arguments?.getString("taskId")?.toLongOrNull()
+            if (taskId != null) {
+                TaskDetailsScreen(navController, taskId, viewModel)
+            }
         }
     }
 }

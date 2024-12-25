@@ -13,12 +13,21 @@ import javax.inject.Inject
 class TaskViewModel @Inject constructor(
     private val taskRepository: TaskRepository
 ) : ViewModel() {
-
     val allTasks: LiveData<List<TaskDb>> = taskRepository.getAllTasks()
 
     fun insert(task: TaskDb) {
         viewModelScope.launch {
             taskRepository.insertTask(task)
+        }
+    }
+
+    fun get(taskId: Long): LiveData<TaskDb> {
+        return taskRepository.getTaskById(taskId)
+    }
+
+    fun delete(task: TaskDb) {
+        viewModelScope.launch {
+            taskRepository.deleteTask(task)
         }
     }
 }

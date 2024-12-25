@@ -9,9 +9,9 @@ data class TaskDb (
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L,
     @ColumnInfo(name = "date_start")
-    var dateStart: Long = 0L,
+    var dateStart: Long? = 0L,
     @ColumnInfo(name = "date_finish")
-    var dateFinish: Long = 0L,
+    var dateFinish: Long? = 0L,
     @ColumnInfo(name = "task_name")
     var name: String = "",
     @ColumnInfo(name = "task_description")

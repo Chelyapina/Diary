@@ -12,9 +12,6 @@ interface TaskDao {
     @Insert
     suspend fun insert(note: TaskDb)
 
-    @Update
-    suspend fun update(note: TaskDb)
-
     @Delete
     suspend fun delete(note: TaskDb)
 

@@ -23,7 +23,7 @@ class TaskViewModel @Inject constructor(
 ) : ViewModel() {
     val allTasks: LiveData<List<TaskDb>> = taskRepository.getAllTasks()
 
-    fun insert(task: TaskDb) {
+    private fun insert(task: TaskDb) {
         viewModelScope.launch {
             taskRepository.insertTask(task)
         }

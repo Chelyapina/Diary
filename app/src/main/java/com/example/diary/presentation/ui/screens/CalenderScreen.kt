@@ -16,13 +16,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.diary.R
 import com.example.diary.presentation.ui.TaskViewModel
 import com.example.diary.presentation.ui.components.MyDatePicker
 import com.example.diary.presentation.ui.components.TwoLineListItem
@@ -31,7 +34,7 @@ import com.example.diary.presentation.ui.components.TwoLineListItem
 @Composable
 fun CalendarScreen(navController: NavHostController, viewModel: TaskViewModel) {
     val allTasks by viewModel.allTasks.observeAsState(initial = emptyList())
-    var selectedDateMillis by remember { mutableStateOf(System.currentTimeMillis()) }
+    var selectedDateMillis by remember { mutableLongStateOf(System.currentTimeMillis()) }
 
     Column(
         modifier = Modifier.padding(32.dp),
@@ -39,7 +42,7 @@ fun CalendarScreen(navController: NavHostController, viewModel: TaskViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         FloatingActionButton(onClick = { navController.navigate("add_task") }) {
-            Text("Добавить задачу")
+            Text(stringResource(R.string.add_task))
         }
 
         MyDatePicker(onDateSelected = { date -> selectedDateMillis = date })

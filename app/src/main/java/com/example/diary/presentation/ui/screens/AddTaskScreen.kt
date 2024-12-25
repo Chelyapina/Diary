@@ -13,8 +13,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.diary.R
 import com.example.diary.presentation.ui.TaskViewModel
 import com.example.diary.presentation.ui.components.MyDateInput
 import com.example.diary.presentation.ui.components.MyTimeInput
@@ -31,8 +33,14 @@ fun AddTaskScreen(navController: NavHostController, viewModel: TaskViewModel) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextField(value = taskName, onValueChange = { taskName = it }, label = { Text("Название задачи") })
-        TextField(value = taskDescription, onValueChange = { taskDescription = it }, label = { Text("Описание задачи") })
+        TextField(value = taskName, onValueChange = { taskName = it }, label = { Text(
+            stringResource(
+                R.string.name_task
+            )
+        ) })
+        TextField(value = taskDescription, onValueChange = { taskDescription = it }, label = { Text(
+            stringResource(R.string.description_task)
+        ) })
         MyDateInput { selectedDate -> selectedDateMillis = selectedDate }
         MyTimeInput { selectedTime -> selectedTimeMillis = selectedTime }
 
@@ -45,7 +53,7 @@ fun AddTaskScreen(navController: NavHostController, viewModel: TaskViewModel) {
                 navController.navigate("calendar")
             }
         }) {
-            Text("Сохранить задачу")
+            Text(stringResource(R.string.save))
         }
     }
 }

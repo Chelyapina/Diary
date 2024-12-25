@@ -16,8 +16,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.diary.R
 import com.example.diary.presentation.ui.TaskViewModel
 import com.example.diary.presentation.ui.components.LabeledText
 
@@ -37,15 +39,15 @@ fun TaskDetailsScreen(navController: NavHostController, taskId: Long, viewModel:
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             task?.let {
-                LabeledText(label = "Название", text = it.name)
-                LabeledText(label = "Описание", text = it.description)
+                LabeledText(label = stringResource(R.string.name), text = it.name)
+                LabeledText(label = stringResource(R.string.description), text = it.description)
 
                 LabeledText(
-                    label = "Дата и время начала",
+                    label = stringResource(R.string.date_start),
                     text = viewModel.formatDateTime(it.dateStart ?: 0L)
                 )
                 LabeledText(
-                    label = "Дата и время окончания",
+                    label = stringResource(R.string.date_finish),
                     text = viewModel.formatDateTime(it.dateFinish ?: 0L)
                 )
 
@@ -53,13 +55,13 @@ fun TaskDetailsScreen(navController: NavHostController, taskId: Long, viewModel:
                     viewModel.delete(it)
                     navController.navigate("calendar")
                 }) {
-                    Text("Удалить")
+                    Text(stringResource(R.string.delete))
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(onClick = {
                     navController.navigate("calendar")
                 }) {
-                    Text("Назад")
+                    Text(stringResource(R.string.back))
                 }
             }
         }
